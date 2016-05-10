@@ -1,26 +1,38 @@
 document.addEventListener("DOMContentLoaded",function(){
+	Vue.component('letter',{
+		data: function(){
+			return{
+				visible:false				
+			}
+		},
+		template:'<div class="letter" v-on:click="open"><div class="letter-content" v-show="visible">\
+		{{content}}</div></div>',
+		props:['content'],
+		methods:{
+			open:function(){
+				if(!this.visible){
+					this.visible=true;
+					this.$emit('opened');
+				}
+			}
+		}
+	})
 	new Vue({
 		el:'#app',
 		ready: function(){
 			var word='Привет';
-			var letter=word.split("");
-			for (var i = 0; i < letter.length; i++) {
-				this.letters.push({
-					content:letter[i],
-					visible:false
-				})
-			};
+			this.letters=word.split("");			
 		},
-		data: function(){
-			return{				
-				letters:[],				
+		methods:{			
+			onOpened:function(){				
+				this.counter++;
 			}
 		},
-		methods: {			
-			open: function(letter){
-				letter.visible=true;
-			},
-		},
-
+		data: function(){
+			return{
+				letters:[],
+				counter:0			
+			}
+		}
 	});
 })	
