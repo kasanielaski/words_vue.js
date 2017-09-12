@@ -1,15 +1,19 @@
 <!DOCTYPE html>
 <html>
+
 <head>
 	<meta charset="utf-8">
-	<script  src ='vue.js' type="text/javascript"></script>
-	<script src ='script.js'type="text/javascript"></script>
+	<script src='vue.js' type="text/javascript"></script>
+	<script src='script.js' type="text/javascript"></script>
 	<link rel="stylesheet" type="text/css" href="style.css">
 </head>
+
 <body>
 	<div id='app'>
+		<user-input @inputed='onInput'></user-input>
 		<div>Открыто букв: {{counter}}</div>
-		<letter v-for="letter in letters" v-bind:content="letter" v-on:opened="onOpened"></letter>
-	</div>	
+		<letter v-for="letter in letters" :content="letter" @opened="onOpened"></letter>
+	</div>
 </body>
+
 </html>

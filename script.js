@@ -1,38 +1,64 @@
-document.addEventListener("DOMContentLoaded",function(){
-	Vue.component('letter',{
-		data: function(){
-			return{
-				visible:false				
-			}
+/* eslint no-new:0 */
+/* global document, Vue */
+document.addEventListener('DOMContentLoaded', () => {
+	Vue.component('letter', {
+		template: `<div class="letter" @click="open">
+				<div class="letter-content" v-show="visible">
+					{{content}}
+				</div>
+			</div>`,
+		data() {
+			return {
+				visible: false
+			};
 		},
-		template:'<div class="letter" v-on:click="open"><div class="letter-content" v-show="visible">\
-		{{content}}</div></div>',
-		props:['content'],
-		methods:{
-			open:function(){
-				if(!this.visible){
-					this.visible=true;
+		props: ['content'],
+		methods: {
+			open() {
+				if (!this.visible) {
+					this.visible = true;
 					this.$emit('opened');
 				}
 			}
 		}
-	})
-	new Vue({
-		el:'#app',
-		ready: function(){
-			var word='Привет';
-			this.letters=word.split("");			
+	});
+
+	Vue.component('user-input', {
+		template: `<div>
+				<p>Введите слово: <input autofocus v-model='inputedWord'><button @click='inputWord'>Click!</button>
+			</div>`,
+		data() {
+			return {
+				inputedWord: ''
+			};
 		},
-		methods:{			
-			onOpened:function(){				
-				this.counter++;
-			}
-		},
-		data: function(){
-			return{
-				letters:[],
-				counter:0			
+		methods: {
+			inputWord() {
+				this.$emit('inputed', this.inputedWord);
 			}
 		}
 	});
-})	
+
+	new Vue({
+		el: '#app',
+		ready() {
+			const defaultWord = 'Lorem';
+			this.letters = defaultWord.split('');
+		},
+		methods: {
+			onOpened() {
+				this.counter += 1;
+			},
+			onInput(data) {
+				this.letters = data.split('');
+				this.counter = 0;
+			}
+		},
+		data() {
+			return {
+				letters: [],
+				counter: 0
+			};
+		}
+	});
+});
